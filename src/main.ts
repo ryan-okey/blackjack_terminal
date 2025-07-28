@@ -59,7 +59,6 @@ const shuffleDeck = (cards: Card[]) => {
             shuffledDeck.push(cards[index]);
         }
     }
-
     return shuffledDeck;
 }
 
@@ -69,7 +68,6 @@ function dealStartingCards(cards: Card[], player: string) {
         if(cards.length > 0){
             dealtCards.push(cards.pop());
         }
-       
     }
     console.log(`The Dealer dealt two cards to ${player}.`);
 
@@ -128,7 +126,6 @@ function optimalPlay(cards: (Card | undefined)[], numberOfAces: number) : [lowes
             bestScore += 1;
         }
     }
-
     return [lowestScore, bestScore];
 }
 
@@ -149,7 +146,6 @@ function dealerTurn(dealersCards: (Card | undefined)[], deck: (Card | undefined)
         console.log(dealersCards);
         [lowestScore, bestScore] = optimalPlay(dealersCards, findNumberOfAces(dealersCards));
     }
-
     return bestScore;
 }
 
@@ -159,7 +155,6 @@ function displayCards(cards: (Card | undefined)[], name: string){
 }
 
 function playerTurn(playerCards: (Card | undefined)[], deck : (Card | undefined)[],) : number {
-    
     console.log("\n====== Player's TURN =======")
     let [lowestScore, highestScore] = highAndLowSums(playerCards);
     displayCards(playerCards, "Player");
@@ -181,7 +176,6 @@ function playerTurn(playerCards: (Card | undefined)[], deck : (Card | undefined)
         displayCards(playerCards, "Player");
         checkWinOrBust(highestScore, lowestScore);
     }
-
     return highestScore;
 }
 
@@ -205,6 +199,7 @@ while(isNewGame){
     isPlaying = true;
     isPlayerTurn = true;
     shouldRoundContinue = true;
+
     let deck = makeDeck();
     let shuffledDeck = shuffleDeck(deck);
 
@@ -215,11 +210,9 @@ while(isNewGame){
     console.log(`[${dealerCards[0]?.cardValue.cardName} of ${dealerCards[0]?.suit}]`);
 
     while(isPlaying){
-
         isNewGame = false;
-        
-        
         let playerSum = playerTurn(playerCards, shuffledDeck);
+
         //Dealer's turn
         if(shouldRoundContinue){
             let dealerSum = dealerTurn(dealerCards, shuffledDeck);
