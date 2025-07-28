@@ -105,7 +105,6 @@ function sumCards(cards: (Card | undefined)[]){
 //need to return tuple (best score, lowest score)
 function optimalPlay(cards: (Card | undefined)[], numberOfAces: number) : [lowestScore: number, bestScore: number]{
     if(numberOfAces == 0){
-        console.log(`${numberOfAces}`)
         let bestScore = sumCards(cards);
         return [bestScore,bestScore];
     }
@@ -141,9 +140,9 @@ function dealerTurn(dealersCards: (Card | undefined)[], deck: (Card | undefined)
     
     //House rules:  Dealer must STAY at a 'soft 17', aka an Ace + Six
     while(bestScore < 17  && deck.length > 0){
-        console.log("Dealer hits.")
+        console.log("\nDealer hits.")
         dealersCards.push(dealCard(deck));
-        console.log(dealersCards);
+        displayCards(dealersCards, "Dealer");
         [lowestScore, bestScore] = optimalPlay(dealersCards, findNumberOfAces(dealersCards));
     }
     return bestScore;
@@ -176,7 +175,13 @@ function playerTurn(playerCards: (Card | undefined)[], deck : (Card | undefined)
         displayCards(playerCards, "Player");
         checkWinOrBust(highestScore, lowestScore);
     }
-    return highestScore;
+
+    [lowestScore, highestScore] = optimalPlay(playerCards, findNumberOfAces(playerCards));
+    if(highestScore <= 21){
+        return highestScore;
+    }
+
+    return lowestScore;
 }
 
 function checkWinOrBust(highestScore : number, lowestScore : number){
@@ -216,17 +221,20 @@ while(isNewGame){
         //Dealer's turn
         if(shouldRoundContinue){
             let dealerSum = dealerTurn(dealerCards, shuffledDeck);
+            
+            console.log("\n====== GAME SUMMARY =======")
+
             displayCards(playerCards, "Player");
             displayCards(dealerCards, "Dealer");
             
             if(dealerSum > 21){
-                shouldPlayAgain(`Dealer BUSTED! ${dealerSum}`)
+                shouldPlayAgain(`\nDealer BUSTED! ${dealerSum}`)
             }else if(dealerSum > playerSum){
-                shouldPlayAgain(`Dealer wins! Dealer: ${dealerSum} Player: ${playerSum}`)
+                shouldPlayAgain(`\nDealer wins! Dealer: ${dealerSum} Player: ${playerSum}`)
             }else if(dealerSum < playerSum){
-                shouldPlayAgain(`Player wins! Dealer: ${dealerSum} Player: ${playerSum}`)
+                shouldPlayAgain(`\nPlayer wins! Dealer: ${dealerSum} Player: ${playerSum}`)
             }else{
-                shouldPlayAgain(`It's a PUSH! Dealer: ${dealerSum} Player: ${playerSum}`)
+                shouldPlayAgain(`\nIt's a PUSH! Dealer: ${dealerSum} Player: ${playerSum}`)
             }
         }
     }
