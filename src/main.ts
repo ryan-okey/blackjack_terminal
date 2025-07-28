@@ -84,7 +84,6 @@ function shouldPlayAgain (message : string){
     console.log(message);
     let shouldPlayAgain = promptUser("Would you like to play again? (y/n)");
     if(shouldPlayAgain?.toLowerCase() === 'y'){
-        console.log("starting new game")
         isNewGame = true;
         isPlaying = false;
         shouldRoundContinue = false;
@@ -107,20 +106,15 @@ function sumCards(cards: (Card | undefined)[]){
 
 //need to return tuple (best score, lowest score)
 function optimalPlay(cards: (Card | undefined)[], numberOfAces: number) : [lowestScore: number, bestScore: number]{
-    console.log(`There are ${numberOfAces} Aces in the deck`);
     if(numberOfAces == 0){
         console.log(`${numberOfAces}`)
         let bestScore = sumCards(cards);
         return [bestScore,bestScore];
     }
-
-    // console.log(`${player} has ${numberOfAces} aces, finding optimal combination of values`);
     
     let nonAceSum = sumCards(cards.filter(card => card?.cardValue.cardName.toLowerCase() != "ace"));
     let bestScore = nonAceSum;
     let lowestScore = bestScore + numberOfAces;
-
-    // console.log(`Non-Ace sum: ${nonAceSum}`);
 
     if(nonAceSum + numberOfAces == 21){
         bestScore = nonAceSum + numberOfAces;
@@ -135,9 +129,6 @@ function optimalPlay(cards: (Card | undefined)[], numberOfAces: number) : [lowes
         }
     }
 
-    // console.log(`DEBUG: Best calulated score: ${bestScore}`);
-    // console.log(cards);
-    // console.log("DEBUG (BEST POSSIBLE SCORE)")
     return [lowestScore, bestScore];
 }
 
