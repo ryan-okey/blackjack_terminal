@@ -1,11 +1,11 @@
 const ps = require("prompt-sync");
 const promptUser = ps();
 
-let suits : string[] = ["Hearts", "Clubs", "Spades", "Diamonds"];
+const suits : string[] = ["Hearts", "Clubs", "Spades", "Diamonds"];
 
 var isPlaying : boolean = true;
 var isNewGame : boolean = true;
-var shouldRoundContinue : boolean = false;
+var shouldRoundContinue : boolean = true;
 var isPlayerTurn : boolean = true;
 
 const cardValues : CardValue[] = [
@@ -185,7 +185,7 @@ function playerTurn(playerCards: (Card | undefined)[], deck : (Card | undefined)
                 shouldPlayAgain("Deck is out of cards!")
             }
         }else{
-            console.log(`Player chose to ${isPlayerTurn ? "hit again!" : "stay!"}`)
+            console.log(`\nPlayer chose to ${isPlayerTurn ? "hit again!" : "stay!"}`)
         }
         displayCards(playerCards, "Player");
         checkWinOrBust(highestScore, lowestScore);
@@ -195,7 +195,6 @@ function playerTurn(playerCards: (Card | undefined)[], deck : (Card | undefined)
 }
 
 function checkWinOrBust(highestScore : number, lowestScore : number){
-    console.log(`Checking Win or Bust.  Highest: ${highestScore}, Lowest: ${lowestScore}`)
     if(highestScore == 21 || lowestScore == 21){
         shouldPlayAgain("\nBLACKJACK!");
     }else if(lowestScore > 21) {
@@ -204,10 +203,7 @@ function checkWinOrBust(highestScore : number, lowestScore : number){
 }
 
 function highAndLowSums(cards: (Card | undefined)[]) : [lowestScore: number, highestScore: number]{
-    console.log(`Debug high and low sums:`);
-    console.log(cards);
     let aceCount = findNumberOfAces(cards);
-    console.log(`there are ${aceCount} aces in the deck.`)
     let nonAceSum = sumCards(cards.filter(card => card?.cardValue.cardName.toLowerCase() != "ace"));
     return [aceCount + nonAceSum, (aceCount * 11) + nonAceSum];
 }
@@ -216,8 +212,8 @@ while(isNewGame){
     console.clear();
     console.log("======BLACKJACK=======")
     isPlaying = true;
-    shouldRoundContinue = true;
     isPlayerTurn = true;
+    shouldRoundContinue = true;
     let deck = makeDeck();
     let shuffledDeck = shuffleDeck(deck);
 
